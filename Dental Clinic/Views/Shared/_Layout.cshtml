@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - عيادة دكتور كريم ياسين</title>
+    <!-- Bootstrap RTL -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold text-primary" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fa-solid fa-tooth me-2"></i> عيادة دكتور كريم ياسين
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-toggle="target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="Home" asp-action="Index">الرئيسية (Home)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fw-bold" href="#cases">حالاتنا (Cases)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fw-bold" href="#doctor">عن الدكتور (About)</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center">
+                        <a asp-controller="Appointment" asp-action="Book" class="btn btn-primary rounded-pill px-4 fw-bold">احجز موعد (Book Now)</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
+    <footer class="border-top footer text-muted bg-light mt-5 py-4">
+        <div class="container text-center">
+            <div class="row align-items-center mb-3">
+                <div class="col-md-4 text-md-end mb-3 mb-md-0">
+                    <h5 class="text-primary fw-bold mb-3">تواصل معنا</h5>
+                    <p class="mb-1"><i class="fa-solid fa-location-dot text-primary ms-2"></i> مركز تمي الامديد، الدقهلية، بجوار معهد الفتيات</p>
+                    <p class="mb-1"><i class="fa-solid fa-phone text-primary ms-2"></i> 01070686601</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0 d-flex justify-content-center gap-3">
+                    <a href="https://www.facebook.com/profile.php?id=100063908136332" target="_blank" class="text-primary fs-3"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/kareem_yassen97?igsh=MXZ3NG4yM3ltNnNzbw==" target="_blank" class="text-danger fs-3"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://youtube.com/@@drkareemyassen?si=gtETgQR06w8fTkgq" target="_blank" class="text-danger fs-3"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+                <div class="col-md-4 text-md-start">
+                    <div id="footerQrCodeContainer">
+                        <!-- QR Code will be loaded in the specific pages if needed or generated dynamically here -->
+                    </div>
+                </div>
+            </div>
+            &copy; 2026 - عيادة دكتور كريم ياسين (Dr. Kareem Yassen Clinic)
+        </div>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

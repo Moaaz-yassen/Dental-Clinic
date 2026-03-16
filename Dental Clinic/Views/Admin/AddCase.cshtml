@@ -1,0 +1,66 @@
+@model Dental_Clinic.Models.TreatmentCase
+@{
+    ViewData["Title"] = "إضافة حالة جديدة";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<div class="card border-0 shadow-sm rounded-4" style="max-width:750px">
+    <div class="card-body p-4">
+        <form asp-action="AddCase" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label fw-bold">عنوان الحالة</label>
+                <input asp-for="Title" class="form-control" placeholder="مثال: ترميم السن الأمامي بالحشو التجميلي" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Description" class="form-label fw-bold">الوصف التفصيلي</label>
+                <textarea asp-for="Description" class="form-control" rows="4"
+                          placeholder="اكتب وصفاً للحالة ونوع العلاج المُقدَّم ..."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">صورة قبل العلاج</label>
+                    <input type="file" name="beforeImage" class="form-control" accept="image/*" id="beforeFile"
+                           onchange="previewImage(this,'beforePreview')">
+                    <div class="mt-2">
+                        <img id="beforePreview" src="#" alt="معاينة" class="img-fluid rounded-3 d-none" style="max-height:180px;">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">صورة بعد العلاج</label>
+                    <input type="file" name="afterImage" class="form-control" accept="image/*" id="afterFile"
+                           onchange="previewImage(this,'afterPreview')">
+                    <div class="mt-2">
+                        <img id="afterPreview" src="#" alt="معاينة" class="img-fluid rounded-3 d-none" style="max-height:180px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3">
+                <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold">
+                    <i class="fa-solid fa-save me-2"></i> حفظ الحالة
+                </button>
+                <a asp-action="Cases" class="btn btn-outline-secondary rounded-pill px-4">إلغاء</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => { preview.src = e.target.result; preview.classList.remove('d-none'); };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}

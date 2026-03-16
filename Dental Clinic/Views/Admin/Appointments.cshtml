@@ -1,0 +1,86 @@
+@model List<Dental_Clinic.Models.Appointment>
+@{
+    ViewData["Title"] = "إدارة المواعيد";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body px-4 pb-4">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>اسم المريض</th>
+                        <th>الهاتف</th>
+                        <th>التاريخ</th>
+                        <th>من</th>
+                        <th>إلى</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in Model)
+                    {
+                        var badge = a.Status switch {
+                            Dental_Clinic.Models.AppointmentStatus.Confirmed => "bg-success",
+                            Dental_Clinic.Models.AppointmentStatus.Pending => "bg-warning text-dark",
+                            Dental_Clinic.Models.AppointmentStatus.Completed => "bg-secondary",
+                            Dental_Clinic.Models.AppointmentStatus.Cancelled => "bg-danger",
+                            _ => "bg-secondary"
+                        };
+                        var label = a.Status switch {
+                            Dental_Clinic.Models.AppointmentStatus.Confirmed => "مؤكد",
+                            Dental_Clinic.Models.AppointmentStatus.Pending => "معلق",
+                            Dental_Clinic.Models.AppointmentStatus.Completed => "مكتمل",
+                            Dental_Clinic.Models.AppointmentStatus.Cancelled => "ملغي",
+                            _ => ""
+                        };
+                        <tr>
+                            <td class="text-muted">#@a.Id</td>
+                            <td class="fw-bold">@a.Patient?.Name</td>
+                            <td>@a.Patient?.Phone</td>
+                            <td>@a.AppointmentDate.ToString("dd/MM/yyyy")</td>
+                            <td>@(new DateTime(2000,1,1).Add(a.StartTime).ToString("hh:mm tt"))</td>
+                            <td>@(new DateTime(2000,1,1).Add(a.EndTime).ToString("hh:mm tt"))</td>
+                            <td><span class="badge @badge rounded-pill px-3">@label</span></td>
+                            <td>
+                                <div class="d-flex gap-1 flex-wrap">
+                                    <form asp-action="UpdateAppointmentStatus" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@a.Id" />
+                                        <input type="hidden" name="status" value="@Dental_Clinic.Models.AppointmentStatus.Completed" />
+                                        <button type="submit" class="btn btn-sm btn-outline-success rounded-pill" title="مكتمل">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <form asp-action="UpdateAppointmentStatus" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@a.Id" />
+                                        <input type="hidden" name="status" value="@Dental_Clinic.Models.AppointmentStatus.Cancelled" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill" title="إلغاء">
+                                            <i class="fa-solid fa-ban"></i>
+                                        </button>
+                                    </form>
+                                    <form asp-action="DeleteAppointment" method="post" class="d-inline"
+                                          onsubmit="return confirm('هل أنت متأكد من حذف هذا الموعد؟');">
+                                        <input type="hidden" name="id" value="@a.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill" title="حذف">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5 text-muted">
+                    <i class="fa-regular fa-calendar-xmark fa-3x mb-3"></i>
+                    <p>لا يوجد مواعيد حتى الآن.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

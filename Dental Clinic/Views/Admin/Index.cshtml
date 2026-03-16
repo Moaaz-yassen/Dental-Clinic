@@ -1,0 +1,113 @@
+@model Dental_Clinic.Models.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "لوحة التحكم";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-4 h-100 bg-primary text-white">
+            <div class="card-body d-flex align-items-center gap-3">
+                <i class="fa-solid fa-users fa-2x"></i>
+                <div>
+                    <div class="fs-1 fw-bold">@Model.TotalPatients</div>
+                    <div class="opacity-75">إجمالي المرضى</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-4 h-100 bg-success text-white">
+            <div class="card-body d-flex align-items-center gap-3">
+                <i class="fa-solid fa-calendar-day fa-2x"></i>
+                <div>
+                    <div class="fs-1 fw-bold">@Model.TotalAppointmentsToday</div>
+                    <div class="opacity-75">مواعيد اليوم</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-4 h-100 bg-warning text-dark">
+            <div class="card-body d-flex align-items-center gap-3">
+                <i class="fa-solid fa-clock fa-2x"></i>
+                <div>
+                    <div class="fs-1 fw-bold">@Model.PendingAppointments</div>
+                    <div class="opacity-75">مواعيد معلقة</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-4 h-100 bg-info text-white">
+            <div class="card-body d-flex align-items-center gap-3">
+                <i class="fa-solid fa-images fa-2x"></i>
+                <div>
+                    <div class="fs-1 fw-bold">@Model.TotalCases</div>
+                    <div class="opacity-75">حالات مُعالجة</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-header bg-white border-0 pt-4 pb-3 px-4">
+        <h5 class="fw-bold text-primary mb-0"><i class="fa-regular fa-calendar me-2"></i>مواعيد اليوم</h5>
+    </div>
+    <div class="card-body px-4 pb-4">
+        @if (Model.TodayAppointments.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>المريض</th>
+                            <th>الهاتف</th>
+                            <th>وقت البداية</th>
+                            <th>وقت الانتهاء</th>
+                            <th>الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in Model.TodayAppointments)
+                        {
+                            <tr>
+                                <td class="fw-bold">@a.Patient?.Name</td>
+                                <td>@a.Patient?.Phone</td>
+                                <td>@(new DateTime(2000,1,1).Add(a.StartTime).ToString("hh:mm tt"))</td>
+                                <td>@(new DateTime(2000,1,1).Add(a.EndTime).ToString("hh:mm tt"))</td>
+                                <td>
+                                    @{
+                                        var badge = a.Status switch {
+                                            Dental_Clinic.Models.AppointmentStatus.Confirmed => "bg-success",
+                                            Dental_Clinic.Models.AppointmentStatus.Pending => "bg-warning text-dark",
+                                            Dental_Clinic.Models.AppointmentStatus.Completed => "bg-secondary",
+                                            Dental_Clinic.Models.AppointmentStatus.Cancelled => "bg-danger",
+                                            _ => "bg-secondary"
+                                        };
+                                        var label = a.Status switch {
+                                            Dental_Clinic.Models.AppointmentStatus.Confirmed => "مؤكد",
+                                            Dental_Clinic.Models.AppointmentStatus.Pending => "معلق",
+                                            Dental_Clinic.Models.AppointmentStatus.Completed => "مكتمل",
+                                            Dental_Clinic.Models.AppointmentStatus.Cancelled => "ملغي",
+                                            _ => ""
+                                        };
+                                    }
+                                    <span class="badge @badge rounded-pill px-3">@label</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center text-muted py-4">
+                <i class="fa-regular fa-calendar-xmark fa-3x mb-3"></i>
+                <p>لا يوجد مواعيد اليوم.</p>
+            </div>
+        }
+    </div>
+</div>

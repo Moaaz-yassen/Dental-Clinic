@@ -1,0 +1,250 @@
+@model Dental_Clinic.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "الرئيسية";
+}
+
+<!-- ===================== HERO ===================== -->
+<section class="hero-section">
+    <div class="container position-relative" style="z-index:1">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="d-inline-flex align-items-center bg-white rounded-pill px-4 py-2 mb-4 shadow-sm">
+                    <i class="fa-solid fa-circle-check text-success me-2"></i>
+                    <span class="text-muted small fw-bold">عيادة أسنان متخصصة في محافظة الدقهلية</span>
+                </div>
+                <h1 class="display-4 fw-bold text-primary mb-3" style="line-height:1.3">
+                    عيادة دكتور<br><span style="color:#0d6efd">كريم ياسين</span>
+                    <i class="fa-solid fa-tooth ms-3" style="color:#00bcd4"></i>
+                </h1>
+                <p class="lead text-secondary mb-5 fs-5">
+                    ابتسامتك المشرقة تبدأ من هنا
+                    <span class="text-muted">(Your Bright Smile Starts Here)</span>
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+                    <a asp-controller="Appointment" asp-action="Book"
+                       class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow">
+                        <i class="fa-regular fa-calendar-check me-2"></i> احجز موعدك الآن
+                    </a>
+                    <a href="tel:01070686601"
+                       class="btn btn-outline-primary btn-lg rounded-pill px-4 py-3 fw-bold">
+                        <i class="fa-solid fa-phone me-2"></i> 01070686601
+                    </a>
+                </div>
+                <p class="text-muted small">
+                    <i class="fa-solid fa-location-dot text-primary me-1"></i>
+                    مركز تمي الامديد، الدقهلية، بجوار معهد الفتيات
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== SERVICES ROW ===================== -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row g-3 text-center">
+            @foreach (var svc in new [] {
+                ("fa-tooth","تجميل الأسنان","حشوات تجميلية مضيئة"),
+                ("fa-person-dots-from-line","زراعة الأسنان","دعامات وتيجان فاخرة"),
+                ("fa-shield-heart","علاج العصب","بدون ألم"),
+                ("fa-star","تبييض الأسنان","نتائج فورية")
+            })
+            {
+                <div class="col-6 col-md-3">
+                    <div class="p-4 rounded-4 border h-100 shadow-sm" style="transition:transform .2s"
+                         onmouseover="this.style.transform='translateY(-5px)'"
+                         onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fa-solid @svc.Item1 fa-2x text-primary mb-3"></i>
+                        <h6 class="fw-bold">@svc.Item2</h6>
+                        <p class="text-muted small mb-0">@svc.Item3</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ===================== DOCTOR ===================== -->
+<section id="doctor" class="doctor-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-5 text-center mb-4 mb-md-0">
+                <img src="~/Images/Doctor/profile.jpg" alt="دكتور كريم ياسين" class="doctor-img"
+                     onerror="this.src='https://placehold.co/360x420/0d6efd/fff?text=Dr.+Kareem'">
+            </div>
+            <div class="col-md-7">
+                <div class="d-inline-flex align-items-center bg-white rounded-pill px-3 py-1 mb-3 shadow-sm">
+                    <i class="fa-solid fa-user-doctor text-primary me-2"></i>
+                    <span class="text-muted small fw-bold">طبيب وجراح الفم والأسنان</span>
+                </div>
+                <h2 class="fw-bold text-primary mb-3">دكتور كريم ياسين</h2>
+                <p class="fs-5 mb-4 text-muted" style="line-height:1.9">
+                    في عيادتنا المتواضعة نؤمن أن كل ابتسامة تستحق الرعاية الكاملة.
+                    نستخدم أحدث تقنيات الحشوات التجميلية المضيئة، الدعامات، والزراعة
+                    لنعيد لك ثقتك بابتسامتك في بيئة نظيفة ومريحة.
+                </p>
+                <div class="d-flex gap-3 mb-4">
+                    <a href="https://www.facebook.com/profile.php?id=100063908136332" target="_blank"
+                       class="social-icon bg-primary text-white">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/kareem_yassen97?igsh=MXZ3NG4yM3ltNnNzbw==" target="_blank"
+                       class="social-icon text-white"
+                       style="background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%)">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://youtube.com/@@drkareemyassen?si=gtETgQR06w8fTkgq" target="_blank"
+                       class="social-icon bg-danger text-white">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="p-3 bg-white rounded-4 text-center shadow-sm">
+                            <div class="fs-2 fw-bold text-primary">+١٠٠</div>
+                            <div class="text-muted small">حالة مُعالجة</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 bg-white rounded-4 text-center shadow-sm">
+                            <div class="fs-2 fw-bold text-success">١٠٠%</div>
+                            <div class="text-muted small">رضا المرضى</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== CASES (Before/After) ===================== -->
+<section id="cases" class="py-5" style="background:#f8faff">
+    <div class="container">
+        <div class="text-center mb-5">
+            <div class="d-inline-flex align-items-center bg-primary bg-opacity-10 rounded-pill px-4 py-2 mb-3">
+                <i class="fa-solid fa-images text-primary me-2"></i>
+                <span class="text-primary fw-bold small">نتائج حقيقية من عيادتنا</span>
+            </div>
+            <h2 class="fw-bold display-6 text-primary">حالاتنا العلاجية</h2>
+            <p class="text-muted fs-5">(Our Treatment Cases) — اضغط على الصورة لعرضها بالحجم الكامل</p>
+        </div>
+
+        <div class="row g-4">
+            @if (Model.Cases != null && Model.Cases.Any())
+            {
+                @foreach (var caseItem in Model.Cases)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card case-card h-100">
+                            <div class="case-before-after">
+                                <div>
+                                    <img src="@caseItem.BeforeImagePath" alt="قبل العلاج"
+                                         class="case-img-clickable"
+                                         data-before="@caseItem.BeforeImagePath"
+                                         data-after="@caseItem.AfterImagePath"
+                                         data-title="@caseItem.Title"
+                                         style="cursor:zoom-in"
+                                         onerror="this.src='https://placehold.co/300x200/eee/666?text=قبل'">
+                                    <span class="case-badge bg-danger text-white">قبل</span>
+                                </div>
+                                <div>
+                                    <img src="@caseItem.AfterImagePath" alt="بعد العلاج"
+                                         class="case-img-clickable"
+                                         data-before="@caseItem.BeforeImagePath"
+                                         data-after="@caseItem.AfterImagePath"
+                                         data-title="@caseItem.Title"
+                                         style="cursor:zoom-in"
+                                         onerror="this.src='https://placehold.co/300x200/0d6efd/fff?text=بعد'">
+                                    <span class="case-badge bg-success text-white">بعد</span>
+                                </div>
+                            </div>
+                            <div class="card-body p-4">
+                                <h5 class="card-title fw-bold text-primary mb-2">@caseItem.Title</h5>
+                                <p class="card-text text-muted small" style="line-height:1.7">@caseItem.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center py-5 text-muted">
+                    <i class="fa-solid fa-images fa-3x mb-3 opacity-50"></i>
+                    <p>سيتم إضافة الحالات قريباً.</p>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-5">
+            <a asp-controller="Appointment" asp-action="Book" 
+               class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow">
+                <i class="fa-regular fa-calendar-check me-2"></i> احجز موعدك الآن
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== LIGHTBOX MODAL ===================== -->
+<div id="lightboxOverlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column;">
+    <button onclick="closeLightbox()" style="position:absolute;top:20px;left:20px;background:rgba(255,255,255,.15);border:none;color:white;width:45px;height:45px;border-radius:50%;font-size:22px;cursor:pointer;">✕</button>
+    <p id="lbTitle" style="color:white;font-size:1.2rem;font-weight:700;margin-bottom:15px;font-family:Cairo,sans-serif"></p>
+    <div style="display:flex;gap:12px;max-width:95vw;max-height:80vh">
+        <div style="text-align:center">
+            <img id="lbBefore" src="" style="max-height:75vh;max-width:47vw;border-radius:12px;object-fit:contain;border:3px solid #dc3545;">
+            <div style="color:#dc3545;font-weight:700;margin-top:8px;font-family:Cairo,sans-serif;font-size:1rem">قبل العلاج</div>
+        </div>
+        <div style="text-align:center">
+            <img id="lbAfter" src="" style="max-height:75vh;max-width:47vw;border-radius:12px;object-fit:contain;border:3px solid #198754;">
+            <div style="color:#198754;font-weight:700;margin-top:8px;font-family:Cairo,sans-serif;font-size:1rem">بعد العلاج</div>
+        </div>
+    </div>
+</div>
+
+<!-- Lightbox JS - inline so it always works -->
+<script>
+    document.querySelectorAll('.case-img-clickable').forEach(function(img) {
+        img.addEventListener('click', function() {
+            document.getElementById('lbBefore').src = this.getAttribute('data-before');
+            document.getElementById('lbAfter').src = this.getAttribute('data-after');
+            document.getElementById('lbTitle').textContent = this.getAttribute('data-title');
+            document.getElementById('lightboxOverlay').style.display = 'flex';
+        });
+    });
+    document.getElementById('lightboxOverlay').addEventListener('click', function(e) {
+        if (e.target === this) { this.style.display = 'none'; }
+    });
+    function closeLightbox() {
+        document.getElementById('lightboxOverlay').style.display = 'none';
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeLightbox();
+    });
+</script>
+
+<!-- ===================== CTA + QR ===================== -->
+<section class="py-5" style="background: linear-gradient(135deg, #0d6efd 0%, #00bcd4 100%);">
+    <div class="container">
+        <div class="row align-items-center text-white">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <h3 class="fw-bold mb-3">زور موقعنا أو شارك العيادة مع أصدقائك!</h3>
+                <p class="opacity-75 mb-4">امسح الـ QR Code للوصول السريع لحجز المواعيد ومشاركة رابط العيادة.</p>
+                <div class="d-flex gap-3">
+                    <a asp-controller="Appointment" asp-action="Book"
+                       class="btn bg-white text-primary rounded-pill px-4 fw-bold">
+                        <i class="fa-regular fa-calendar-check me-2"></i> احجز موعد
+                    </a>
+                    <a href="tel:01070686601" class="btn btn-outline-light rounded-pill px-4 fw-bold">
+                        <i class="fa-solid fa-phone me-2"></i> اتصل بنا
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <div class="d-inline-block bg-white p-3 rounded-4 shadow-lg">
+                    <img src="@Model.QRCodeBase64" alt="QR Code" style="width:150px;height:150px;border-radius:8px">
+                    <p class="text-primary fw-bold mt-2 mb-0 small">امسح للحجز (Scan to Book)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

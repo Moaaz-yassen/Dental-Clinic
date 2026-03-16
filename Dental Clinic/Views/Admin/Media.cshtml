@@ -1,0 +1,122 @@
+@model Dental_Clinic.Models.MediaViewModel
+@{
+    ViewData["Title"] = "مكتبة الصور";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<!-- Upload Form -->
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <h6 class="fw-bold mb-3"><i class="fa-solid fa-hospital me-2 text-primary"></i>رفع صورة للعيادة</h6>
+                <form asp-action="UploadMedia" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="folder" value="Clinic" />
+                    <div class="mb-3">
+                        <input type="file" name="image" class="form-control" accept="image/*" required
+                               onchange="previewUpload(this,'clinicPreview')">
+                    </div>
+                    <img id="clinicPreview" class="img-fluid rounded-3 mb-3 d-none" style="max-height:150px">
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 w-100">
+                        <i class="fa-solid fa-upload me-2"></i> رفع
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <h6 class="fw-bold mb-3"><i class="fa-solid fa-user-doctor me-2 text-success"></i>رفع صورة للدكتور</h6>
+                <form asp-action="UploadMedia" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="folder" value="Doctor" />
+                    <div class="mb-3">
+                        <input type="file" name="image" class="form-control" accept="image/*" required
+                               onchange="previewUpload(this,'doctorPreview')">
+                    </div>
+                    <img id="doctorPreview" class="img-fluid rounded-3 mb-3 d-none" style="max-height:150px">
+                    <button type="submit" class="btn btn-success rounded-pill px-4 w-100">
+                        <i class="fa-solid fa-upload me-2"></i> رفع
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Clinic Images -->
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h6 class="fw-bold text-primary mb-0"><i class="fa-solid fa-hospital me-2"></i>صور العيادة (@Model.ClinicImages.Count)</h6>
+    </div>
+    <div class="card-body px-4 pb-4">
+        <div class="row g-3">
+            @foreach (var img in Model.ClinicImages)
+            {
+                <div class="col-6 col-md-3 col-lg-2">
+                    <div class="position-relative">
+                        <img src="@img" class="img-fluid rounded-3 w-100" style="height:120px;object-fit:cover" alt="صورة عيادة">
+                        <form asp-action="DeleteMedia" method="post"
+                              onsubmit="return confirm('حذف هذه الصورة؟');"
+                              class="position-absolute top-0 start-0 m-1">
+                            <input type="hidden" name="fileName" value="@System.IO.Path.GetFileName(img)" />
+                            <input type="hidden" name="folder" value="Clinic" />
+                            <button type="submit" class="btn btn-danger btn-sm rounded-circle" style="width:28px;height:28px;padding:0;">
+                                <i class="fa-solid fa-times" style="font-size:11px"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+            @if (!Model.ClinicImages.Any())
+            {
+                <p class="text-muted">لا توجد صور للعيادة بعد.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Doctor Images -->
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h6 class="fw-bold text-success mb-0"><i class="fa-solid fa-user-doctor me-2"></i>صور الدكتور (@Model.DoctorImages.Count)</h6>
+    </div>
+    <div class="card-body px-4 pb-4">
+        <div class="row g-3">
+            @foreach (var img in Model.DoctorImages)
+            {
+                <div class="col-6 col-md-3 col-lg-2">
+                    <div class="position-relative">
+                        <img src="@img" class="img-fluid rounded-3 w-100" style="height:120px;object-fit:cover" alt="صورة دكتور">
+                        <form asp-action="DeleteMedia" method="post"
+                              onsubmit="return confirm('حذف هذه الصورة؟');"
+                              class="position-absolute top-0 start-0 m-1">
+                            <input type="hidden" name="fileName" value="@System.IO.Path.GetFileName(img)" />
+                            <input type="hidden" name="folder" value="Doctor" />
+                            <button type="submit" class="btn btn-danger btn-sm rounded-circle" style="width:28px;height:28px;padding:0;">
+                                <i class="fa-solid fa-times" style="font-size:11px"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+            @if (!Model.DoctorImages.Any())
+            {
+                <p class="text-muted">لا توجد صور للدكتور بعد.</p>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function previewUpload(input, previewId) {
+            const preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => { preview.src = e.target.result; preview.classList.remove('d-none'); };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
