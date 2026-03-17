@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "حجز ناجح";
+}
+
+<div class="container py-5 text-center">
+    <div class="card border-0 shadow-lg rounded-4 p-5 mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+            <i class="fa-solid fa-circle-check text-success" style="font-size: 80px; margin-bottom: 20px;"></i>
+            <h2 class="text-success fw-bold mb-4">تم تأكيد الموعد بنجاح!</h2>
+            
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success fs-5 mb-4 rounded-3">
+                    <i class="fa-solid fa-info-circle me-2"></i> @TempData["SuccessMessage"]
+                </div>
+            }
+
+            <p class="fs-5 text-muted mb-5">
+                ننتظرك في العيادة في الوقت المحدد. يرجى الحضور قبل الموعد بـ 10 دقائق لضمان سرعة الخدمة.<br>
+                في حال رغبتك في تعديل أو إلغاء الموعد، يرجى التواصل معنا على الرقم <strong>01070686601</strong>.
+            </p>
+
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow">
+                <i class="fa-solid fa-house me-2"></i> العودة للرئيسية (Back to Home)
+            </a>
+        </div>
+    </div>
+</div>

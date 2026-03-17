@@ -1,0 +1,97 @@
+@model IEnumerable<Dental_Clinic.Models.Appointment>
+
+<div class="table-responsive p-3">
+    <table class="table table-hover table-bordered align-middle text-center">
+        <thead class="table-light">
+            <tr>
+                <th>اسم المريض</th>
+                <th>رقم الهاتف</th>
+                <th>تاريخ الموعد</th>
+                <th>وقت البدء</th>
+                <th>وقت الانتظار المتوقع</th>
+                <th>إجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@item.Patient?.Name</td>
+                        <td dir="ltr">@item.Patient?.Phone</td>
+                        <td>@item.AppointmentDate.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            <input type="time" class="form-control form-control-sm text-center d-inline w-auto" id="time_@item.Id" value="@item.StartTime.ToString(@"hh\:mm")" />
+                        </td>
+                        <td>@(item.ExpectedWaitTime) دقيقة</td>
+                        <td>
+                            <button class="btn btn-sm btn-success m-1" onclick="updateTime(@item.Id)">
+                                <i class="fa-solid fa-save"></i> حفظ الوقت
+                            </button>
+                            <button class="btn btn-sm btn-danger m-1" onclick="deleteAppointment(@item.Id)">
+                                <i class="fa-solid fa-trash"></i> حذف
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-muted py-4">لا توجد حجوزات حالية.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function updateTime(id) {
+        var newTime = $('#time_' + id).val();
+        if(!newTime) {
+            alert('الرجاء إدخال وقت صحيح');
+            return;
+        }
+
+        if(confirm('هل أنت متأكد من تغيير وقت هذا الحجز؟')) {
+            $.ajax({
+                url: '/Appointment/EditAppointmentTime',
+                type: 'POST',
+                data: { id: id, newTime: newTime },
+                success: function(response) {
+                    if(response.success) {
+                        // Reload the table
+                        window.loadAppointments();
+                    } else {
+                        alert(response.message || 'حدث خطأ أثناء حفظ الوقت');
+                    }
+                },
+                error: function() {
+                    alert('خطأ في الاتصال بالخادم');
+                }
+            });
+        }
+    }
+
+    function deleteAppointment(id) {
+        if(confirm('هل أنت متأكد من حذف هذا الحجز نهائياً؟')) {
+            $.ajax({
+                url: '/Appointment/DeleteAppointment',
+                type: 'POST',
+                data: { id: id },
+                success: function(response) {
+                    if(response.success) {
+                        // Reload the table
+                        window.loadAppointments();
+                    } else {
+                        alert(response.message || 'حدث خطأ أثناء الحذف');
+                    }
+                },
+                error: function() {
+                    alert('خطأ في الاتصال بالخادم');
+                }
+            });
+        }
+    }
+</script>

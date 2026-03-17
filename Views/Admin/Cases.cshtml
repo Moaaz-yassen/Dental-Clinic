@@ -1,0 +1,61 @@
+@model List<Dental_Clinic.Models.TreatmentCase>
+@{
+    ViewData["Title"] = "الحالات العلاجية";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="fw-bold text-primary mb-0"><i class="fa-solid fa-images me-2"></i>جميع الحالات</h5>
+    <a asp-action="AddCase" class="btn btn-primary rounded-pill px-4">
+        <i class="fa-solid fa-plus me-2"></i> إضافة حالة جديدة
+    </a>
+</div>
+
+<div class="row g-4">
+    @foreach (var c in Model)
+    {
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="row g-0">
+                    <div class="col-6">
+                        <img src="@c.BeforeImagePath" class="img-fluid rounded-top-start-4"
+                             style="height:160px;object-fit:cover;width:100%"
+                             onerror="this.src='https://placehold.co/300x200/eee/999?text=قبل'"
+                             alt="قبل">
+                        <div class="text-center small text-muted py-1">قبل</div>
+                    </div>
+                    <div class="col-6">
+                        <img src="@c.AfterImagePath" class="img-fluid rounded-top-end-4"
+                             style="height:160px;object-fit:cover;width:100%"
+                             onerror="this.src='https://placehold.co/300x200/eee/999?text=بعد'"
+                             alt="بعد">
+                        <div class="text-center small text-muted py-1">بعد</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h6 class="fw-bold">@c.Title</h6>
+                    <p class="small text-muted" style="max-height:60px;overflow:hidden">@c.Description</p>
+                </div>
+                <div class="card-footer bg-white border-0 pb-3 d-flex gap-2">
+                    <a asp-action="EditCase" asp-route-id="@c.Id" class="btn btn-sm btn-outline-primary rounded-pill flex-grow-1">
+                        <i class="fa-solid fa-pen me-1"></i> تعديل
+                    </a>
+                    <form asp-action="DeleteCase" method="post"
+                          onsubmit="return confirm('هل تريد حذف هذه الحالة؟');" class="flex-grow-1">
+                        <input type="hidden" name="id" value="@c.Id" />
+                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill w-100">
+                            <i class="fa-solid fa-trash me-1"></i> حذف
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!Model.Any())
+    {
+        <div class="col-12 text-center py-5 text-muted">
+            <i class="fa-solid fa-images fa-3x mb-3"></i>
+            <p>لا يوجد حالات بعد. اضغط "إضافة حالة جديدة".</p>
+        </div>
+    }
+</div>

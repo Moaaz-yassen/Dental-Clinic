@@ -1,0 +1,136 @@
+@model Dental_Clinic.Models.Patient
+
+@{
+    ViewData["Title"] = "احجز موعد";
+}
+
+<style>
+    .booking-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 40px;
+    }
+    
+    .form-control, .form-select {
+        border-radius: 10px;
+        padding: 12px 15px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    
+    .time-slot {
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .time-slot:hover {
+        background-color: #e9ecef;
+    }
+    .time-slot.selected {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+</style>
+
+<div class="container py-5">
+    <div class="booking-container bg-white border border-primary">
+        <h2 class="text-center text-primary fw-bold mb-4"><i class="fa-regular fa-calendar-check me-2"></i> حجز موعد جديد</h2>
+        <p class="text-center text-muted mb-5">مواعيد العيادة: من 4:00 عصرًا حتى 10:00 مساءً (من الإثنين للسبت - الجمعة عطلة)</p>
+
+        <form asp-action="Book" method="post" id="bookingForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <label asp-for="Name" class="form-label fw-bold"></label>
+                    <input asp-for="Name" class="form-control" placeholder="أدخل اسمك بالكامل" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Phone" class="form-label fw-bold"></label>
+                    <input asp-for="Phone" class="form-control" placeholder="أدخل رقم الهاتف (مثل: 01xxxxxxxxx)" required />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-5">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">تاريخ الموعد (Date)</label>
+                    <input type="date" id="AppointmentDate" name="AppointmentDate" class="form-control" required min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">الوقت المتاح (Available Time)</label>
+                    <select id="StartTime" name="StartTime" class="form-select" required disabled>
+                        <option value="">-- اختر التاريخ أولاً --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold w-100 shadow" id="submitBtn" disabled>
+                    تأكيد الحجز (Confirm Booking)
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function () {
+            // Disable Fridays
+            const dateInput = document.getElementById('AppointmentDate');
+            dateInput.addEventListener('input', function(e) {
+                var day = new Date(this.value).getUTCDay();
+                if([5].includes(day)) {
+                    e.target.setCustomValidity('العيادة مغلقة يوم الجمعة. يرجى اختيار يوم آخر.');
+                    e.target.reportValidity();
+                    $('#StartTime').prop('disabled', true).html('<option value="">-- العيادة مغلقة يوم الجمعة --</option>');
+                    $('#submitBtn').prop('disabled', true);
+                } else {
+                    e.target.setCustomValidity('');
+                    fetchAvailableTimes(this.value);
+                }
+            });
+
+            function fetchAvailableTimes(date) {
+                if (!date) return;
+
+                $('#StartTime').prop('disabled', true).html('<option value="">جاري تحميل المواعيد...</option>');
+                $('#submitBtn').prop('disabled', true);
+
+                $.get('/Appointment/GetAvailableSlots', { date: date }, function (data) {
+                    var options = '<option value="">-- اختر الوقت المناسب --</option>';
+                    if (data && data.length > 0) {
+                        $.each(data, function (index, item) {
+                            options += '<option value="' + item.value + '">' + item.text + '</option>';
+                        });
+                        $('#StartTime').prop('disabled', false);
+                    } else {
+                        options = '<option value="">-- لا يوجد مواعيد متاحة في هذا اليوم --</option>';
+                    }
+                    $('#StartTime').html(options);
+                }).fail(function() {
+                     $('#StartTime').html('<option value="">-- حدث خطأ أثناء تحميل المواعيد --</option>');
+                });
+            }
+
+            $('#StartTime').change(function() {
+                if ($(this).val()) {
+                    $('#submitBtn').prop('disabled', false);
+                } else {
+                    $('#submitBtn').prop('disabled', true);
+                }
+            });
+        });
+    </script>
+}
